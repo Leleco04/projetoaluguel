@@ -20,10 +20,12 @@
                     <div class="row">
                         <img src="./imagens/login.svg" alt="imagem-login" class="col-6">
                         <div class="col-4 m-auto input-g">
-                            <input type="email" class="row mb-3 p-3 w-100" id="email" name="email" placeholder="E-mail">
-                            <input type="password" class="row mb-3 p-3 w-100" id="senha" name="senha" placeholder="**********">
-                            <a href="./home"><button class="btn btn-primary w-50">Login</button></a>
-                            <a href="./cadastro" class="ms-5 link-tela">Cadastre-se</a>
+                            <form method="POST" action="./login">
+                                <input type="email" class="row mb-3 p-3 w-100" id="email" name="email" placeholder="E-mail">
+                                <input type="password" class="row mb-3 p-3 w-100" id="senha" name="senha" placeholder="**********">
+                                <a href="./home"><button class="btn btn-primary w-50">Login</button></a>
+                                <a href="./cadastro" class="ms-5 link-tela">Cadastre-se</a>
+                            </form>
                         </div>
                     </div>
                 </div>

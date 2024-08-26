@@ -9,7 +9,7 @@ import model.bean.Usuarios;
 
 public class UsuariosDAO {
     
-    public boolean verificarLogin(Usuarios user) {
+    public Usuarios verificarLogin(Usuarios user) {
         Usuarios usuario = new Usuarios();
         try {
             Connection conexao = Conexao.conectar();
@@ -36,6 +36,7 @@ public class UsuariosDAO {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+        return usuario;
     }
 
     public void cadastrarUsuario(Usuarios novoUsuario) {

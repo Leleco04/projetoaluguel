@@ -25,8 +25,8 @@
                                 <input type="email" class="row mb-3 p-3 w-100" id="email" name="email" placeholder="E-mail">
                                 <input type="password" class="row mb-3 p-3 w-100" id="senha" name="senha" placeholder="**********">
                                 <a href=""><button class="btn btn-primary w-50" type="submit">Cadastrar</button></a>
-                            </form>
-                            <a href="./login" class="ms-5 link-tela">Fazer login</a>
+                                <a href="./login" class="ms-5 link-tela">Fazer login</a>
+                            </form>                           
                         </div>
                     </div>
                 </div>

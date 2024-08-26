@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.bean.Usuarios;
+import model.dao.UsuariosDAO;
 
 /**
  *
@@ -37,7 +39,7 @@ public class HomeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeController</title>");            
+            out.println("<title>Servlet HomeController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet HomeController at " + request.getContextPath() + "</h1>");
@@ -59,14 +61,14 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String pagina = request.getServletPath();
-        
-        if(pagina.equals("/login")) {
+
+        if (pagina.equals("/login")) {
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
-        } else if(pagina.equals("/home")) {
+        } else if (pagina.equals("/home")) {
             request.getRequestDispatcher("/WEB-INF/jsp/home.jsp").forward(request, response);
-        } else if(pagina.equals("/cadastro")) {
+        } else if (pagina.equals("/cadastro")) {
             request.getRequestDispatcher("/WEB-INF/jsp/cadastro.jsp").forward(request, response);
-            }
+        }
     }
 
     /**
@@ -80,7 +82,30 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String pagina = request.getServletPath();
+        Usuarios usuario = new Usuarios();
+        UsuariosDAO usuariosDAO = new UsuariosDAO();
+
+        if(pagina.equals("/cadastro")) {
+            usuario.setNome(request.getParameter("nome"));
+            usuario.setEmail(request.getParameter("email"));
+            usuario.setSenha(request.getParameter("senha"));
+
+            usuariosDAO.cadastrarUsuario(usuario);
+
+            response.sendRedirect("./login");
+        } else if(pagina.equals("/login")) {
+            usuario.setEmail(request.getParameter("email"));
+            usuario.setSenha(request.getParameter("senha"));
+            
+            usuario = usuariosDAO.verificarLogin(usuario);
+            
+            if(usuario.getId_usuario() > 0){
+                response.sendRedirect("./home");
+            } else {
+                response.sendRedirect("./login");
+            }
+        }
     }
 
     /**
