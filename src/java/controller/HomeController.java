@@ -7,19 +7,22 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.bean.Carros;
 import model.bean.Usuarios;
+import model.dao.CarrosDAO;
 import model.dao.UsuariosDAO;
 
 /**
  *
  * @author Senai
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/HomeController", "/login", "/cadastro", "/home"})
+@WebServlet(name = "HomeController", urlPatterns = {"/HomeController", "/login", "/cadastro", "/home", "/cadastro-carro", "/carros"})
 public class HomeController extends HttpServlet {
 
     /**
@@ -61,6 +64,8 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String pagina = request.getServletPath();
+        CarrosDAO carrosDAO = new CarrosDAO();
+        Usuarios usuario = new Usuarios();
 
         if (pagina.equals("/login")) {
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
@@ -68,6 +73,12 @@ public class HomeController extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/home.jsp").forward(request, response);
         } else if (pagina.equals("/cadastro")) {
             request.getRequestDispatcher("/WEB-INF/jsp/cadastro.jsp").forward(request, response);
+        } else if (pagina.equals("/cadastro-carro")) {
+            request.getRequestDispatcher("/WEB-INF/jsp/cadastro-carro.jsp").forward(request, response);
+        } else if (pagina.equals("/carros")) {
+            List<Carros> carros = carrosDAO.lerCarros();
+            request.setAttribute("carros", carros);
+            request.getRequestDispatcher("/WEB-INF/jsp/carros.jsp").forward(request, response);
         }
     }
 
@@ -86,7 +97,7 @@ public class HomeController extends HttpServlet {
         Usuarios usuario = new Usuarios();
         UsuariosDAO usuariosDAO = new UsuariosDAO();
 
-        if(pagina.equals("/cadastro")) {
+        if (pagina.equals("/cadastro")) {
             usuario.setNome(request.getParameter("nome"));
             usuario.setEmail(request.getParameter("email"));
             usuario.setSenha(request.getParameter("senha"));
@@ -94,14 +105,14 @@ public class HomeController extends HttpServlet {
             usuariosDAO.cadastrarUsuario(usuario);
 
             response.sendRedirect("./login");
-        } else if(pagina.equals("/login")) {
+        } else if (pagina.equals("/login")) {
             usuario.setEmail(request.getParameter("email"));
             usuario.setSenha(request.getParameter("senha"));
-            
+
             usuario = usuariosDAO.verificarLogin(usuario);
-            
-            if(usuario.getId_usuario() > 0){
-                response.sendRedirect("./home");
+
+            if (usuario.getId_usuario() > 0) {
+                response.sendRedirect("./carros");
             } else {
                 response.sendRedirect("./login");
             }
